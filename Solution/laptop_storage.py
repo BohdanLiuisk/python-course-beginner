@@ -15,7 +15,7 @@ d6 = (c1 // x) * (b1 // y) * (a1 // z)
 if d1 >= d2:
     d2 = d1
 if d3 >= d4:
-    d4 = d2s
+    d4 = d2
 if d5 >= d6:
     d6 = d5
 
