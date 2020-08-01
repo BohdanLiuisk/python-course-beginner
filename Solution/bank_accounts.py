@@ -1,28 +1,36 @@
-bank = dict()
+def deposit(name, sum):
+    bank[name] = bank.get(name, 0) + int(sum)
 
-def deposit(name_and_sum, sign=1):
-    name, summ = name_and_sum.split()
-    bank[name] = bank.get(name, 0) + int(summ) * sign
 
-def withdraw(name_and_sum):
-    deposit(name_and_sum, sign=-1)
+def withdraw(name, sum):
+    bank[name] = bank.get(name, 0) - int(sum)
+
 
 def balance(name):
-    print(bank.get(name, 'ERROR'))
+    if name not in bank:
+        print('ERROR')
+    else:
+        print(bank[name])
 
-def transfer(name_and_sum):
-    withdraw(' '.join(name_and_sum.split()[::2]))
-    deposit(' '.join(name_and_sum.split()[1:]))
 
-def income(prs):
-    for name, summ in bank.items():
-        bank[name] = int(summ * (1 + int(prs) / 100 * (summ > 0)))
+def income(percent):
+    for k, v in bank.items():
+        if v > 0:
+            bank[k] = int(v * ((int(percent)/100) + 1))
 
-commands = dict(DEPOSIT=deposit, WITHDRAW=withdraw, BALANCE=balance,
-                TRANSFER=transfer, INCOME=income)
-
-with open('input.txt', encoding='utf8') as inf:
-    for line in inf:
-        command, name_and_sum = line.strip().split(' ', 1)
-        action = commands.get(command)
-        action(name_and_sum)
+bank = dict()
+inFile = open('input.txt')
+for line in inFile:
+    line = line.split()
+    if 'BALANCE' in line:
+        balance(line[1])
+    elif 'DEPOSIT' in line:
+        deposit(line[1], line[2])
+    elif 'WITHDRAW' in line:
+        withdraw(line[1], line[2])
+    elif 'INCOME' in line:
+        income(line[1])
+    else:
+        withdraw(line[1], line[3])
+        deposit(line[2], line[3])
+inFile.close()
